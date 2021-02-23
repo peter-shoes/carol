@@ -59,6 +59,7 @@ func _physics_process(delta):
 	
 func freeze():
 	frozen = true
+	#TODO make sure the character falls to the ground and doesn't freeze in midair
 	
 func unfreeze():
 	frozen = false
