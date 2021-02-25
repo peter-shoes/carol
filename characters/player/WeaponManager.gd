@@ -1,11 +1,12 @@
 extends Spatial
 
-enum WEAPON_SLOTS {MACHETE, MACHINE_GUN, SHOTGUN, ROCKET_LAUNCHER}
+enum WEAPON_SLOTS {MACHETE, MACHINE_GUN, SHOTGUN, ROCKET_LAUNCHER, BLASTER}
 var slots_unlocked = {
 	WEAPON_SLOTS.MACHETE: true,
 	WEAPON_SLOTS.MACHINE_GUN: true,
 	WEAPON_SLOTS.SHOTGUN: true,
 	WEAPON_SLOTS.ROCKET_LAUNCHER: true,
+	WEAPON_SLOTS.BLASTER: true,
 } #this is gd dict formatting
 
 onready var weapons = $Weapons.get_children()
@@ -47,3 +48,5 @@ func disable_all_weapons():
 			weapon.set_inactive()
 		else:
 			weapon.hide()
+
+
