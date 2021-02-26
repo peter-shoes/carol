@@ -29,10 +29,13 @@ func _ready(): #ready is called when the scene is ready
 	character_mover.init(self) #initialize the character mover and send it self (KinematicBody)
 	health_manager.init()
 	health_manager.connect("dead", self, "kill") #connects dead variable to kill func i guess
+	weapon_manager.init($Camera/FirePoint, [self]) #init weapon manager with firepoint node and bodies 2 exclude
 	
 func _process(_delta):
 	if Input.is_action_just_pressed("exit"):
 		get_tree().quit()
+	if Input.is_action_just_pressed("restart"):
+		get_tree().reload_current_scene()
 		
 	if dead:
 		#TODO make sure player falls to the ground and doesn't freeze in midair
@@ -52,6 +55,11 @@ func _process(_delta):
 	character_mover.set_move_vec(move_vec)
 	if Input.is_action_just_pressed("jump"):
 		character_mover.jump()
+		
+	weapon_manager.attack(
+		Input.is_action_just_pressed("attack"),
+		Input.is_action_pressed("attack")
+		)
 
 func _input(event):
 	# event is basically any event that the computer senses

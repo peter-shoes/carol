@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://characters/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://characters/player/WeaponManager.gd" type="Script" id=2]
@@ -9,13 +9,17 @@
 [ext_resource path="res://weapons/raw_assets/adv-time-shotgun1.1.glb" type="PackedScene" id=7]
 [ext_resource path="res://characters/CharacterMover.gd" type="Script" id=8]
 [ext_resource path="res://characters/HealthManager.gd" type="Script" id=9]
+[ext_resource path="res://weapons/Weapon.gd" type="Script" id=10]
+[ext_resource path="res://weapons/HitScanBulletEmitter.tscn" type="PackedScene" id=11]
+[ext_resource path="res://effects/MuzzleFlash.gd" type="Script" id=12]
+[ext_resource path="res://blender_files/untextured_blaster_flash.glb" type="PackedScene" id=13]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
 
 [sub_resource type="Animation" id=2]
 resource_name = "attack"
-length = 0.2
+length = 0.5
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Graphics:translation")
@@ -24,10 +28,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.05, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.05, 0.15, 0.2, 0.25, 0.35, 0.45, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( -1.87718, 0.662724, 0 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( -1.24292, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( -0.6893, 0.817356, 0 ), Vector3( -0.6893, 1.27484, 0 ), Vector3( -0.6893, -1.2948, 0 ), Vector3( -0.6893, 0.817356, 0 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Graphics:rotation_degrees")
@@ -36,10 +40,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.05, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.05, 0.15, 0.2, 0.25, 0.35, 0.45, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( -8.76882e-07, -1.58526e-07, 20.495 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( -2.50448e-06, -2.50448e-06, 90 ), Vector3( -2.50448e-06, -2.50448e-06, 90 ), Vector3( -2.50448e-06, -2.50448e-06, 90 ), Vector3( -2.50448e-06, -2.50448e-06, 90 ), Vector3( 0, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -123,19 +127,42 @@ visible = false
 
 [node name="Blaster" type="Spatial" parent="Camera/WeaponManager/Weapons"]
 transform = Transform( -1.60709e-09, 0, 0.036766, 0, 0.036766, 0, -0.036766, 0, -1.60709e-09, 0.102332, 0.18295, 0.50601 )
+script = ExtResource( 10 )
+automatic = true
+attack_rate = 0.5
 
 [node name="Graphics" type="Spatial" parent="Camera/WeaponManager/Weapons/Blaster"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24292, 0, 0 )
 
 [node name="adv-time-shotgun11" parent="Camera/WeaponManager/Weapons/Blaster/Graphics" instance=ExtResource( 7 )]
+
+[node name="MuzzleFlash" type="Spatial" parent="Camera/WeaponManager/Weapons/Blaster/Graphics"]
+transform = Transform( -6.76601e-08, -1.54788, -6.76601e-08, 1.54788, -6.76601e-08, 6.76601e-08, -6.76601e-08, -6.76601e-08, 1.54788, 1.74789, 0.167233, 0 )
+script = ExtResource( 12 )
+
+[node name="untextured_blaster_flash" parent="Camera/WeaponManager/Weapons/Blaster/Graphics/MuzzleFlash" instance=ExtResource( 13 )]
+
+[node name="OmniLight" type="OmniLight" parent="Camera/WeaponManager/Weapons/Blaster/Graphics/MuzzleFlash"]
+transform = Transform( 17.5718, 3.97904e-13, -1.02318e-12, 0, 17.5718, -6.52028e-13, 3.41061e-13, -4.06576e-20, 17.5718, 0, -0.134171, 0 )
+light_color = Color( 1, 0.952941, 0.47451, 1 )
+light_energy = 1.5
+shadow_enabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Camera/WeaponManager/Weapons/Blaster"]
 autoplay = "idle"
 anims/attack = SubResource( 2 )
 anims/idle = SubResource( 3 )
 
+[node name="BulletEmitters" type="Spatial" parent="Camera/WeaponManager/Weapons/Blaster"]
+
+[node name="HitScanBulletEmitter" parent="Camera/WeaponManager/Weapons/Blaster/BulletEmitters" instance=ExtResource( 11 )]
+
+[node name="FirePoint" type="Spatial" parent="Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.188483 )
+
 [node name="CharacterMover" type="Spatial" parent="."]
 script = ExtResource( 8 )
 
 [node name="HealthManager" type="Spatial" parent="."]
 script = ExtResource( 9 )
+[connection signal="fired" from="Camera/WeaponManager/Weapons/Blaster" to="Camera/WeaponManager/Weapons/Blaster/Graphics/MuzzleFlash" method="flash"]
