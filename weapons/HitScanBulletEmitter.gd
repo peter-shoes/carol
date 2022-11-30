@@ -18,7 +18,7 @@ func fire():
 		our_pos, #from here
 		our_pos - global_transform.basis.z * distance, #to here
 		bodies_to_exclude, #bodies to exclude
-		1 + 2 + 4, #collision mask. Go to player node, find layers on the right. world layer is 1, characters later is 2, hitboxes layer is 4. hence.
+		1 + 4, #collision mask. Go to player node, find layers on the right. world layer is 1, characters later is 2, hitboxes layer is 4. hence.
 		true, #intersect with bodies
 		true) #intersect with areas
 	if result and result.collider.has_method("hurt"):

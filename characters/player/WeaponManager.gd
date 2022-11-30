@@ -10,6 +10,9 @@ var slots_unlocked = {
 } #this is gd dict formatting
 
 onready var weapons = $Weapons.get_children()
+onready var alert_area_hearing = $AlertAreaHearing
+onready var alert_area_los = $AlertAreaLos
+
 var cur_slot = 0
 var cur_weapon = null
 var fire_point : Spatial
@@ -17,13 +20,17 @@ var bodies_to_exclude : Array = []
 
 func _ready():
 	pass
-	
+
 func init(_fire_point: Spatial, _bodies_to_exclude: Array):
 	fire_point = _fire_point
 	bodies_to_exclude = _bodies_to_exclude
 	for weapon in weapons:
 		if weapon.has_method("init"):
 			weapon.init(_fire_point, _bodies_to_exclude) #initialize all weapons
+	
+	#repeat this for all weapon alerts except melee
+	weapons[WEAPON_SLOTS.BLASTER].connect("fired", self, "alert_nearby_enemies")
+	
 	switch_to_weapon_slot(WEAPON_SLOTS.MACHETE)#only works with al always true weapon like the machete
 	
 func attack(attack_input_just_pressed: bool, attack_input_held: bool): #from weapon script
@@ -63,5 +70,15 @@ func disable_all_weapons():
 			weapon.set_inactive()
 		else:
 			weapon.hide()
+			
+func alert_nearby_enemies():
+	var nearby_enemies = alert_area_los.get_overlapping_bodies()
+	for nearby_enemy in nearby_enemies:
+		if nearby_enemy.has_method("alert"):
+			nearby_enemy.alert()
+	nearby_enemies = alert_area_hearing.get_overlapping_bodies()
+	for nearby_enemy in nearby_enemies:
+		if nearby_enemy.has_method("alert"):
+			nearby_enemy.alert(false)
 
 

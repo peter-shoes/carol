@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://characters/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://characters/player/WeaponManager.gd" type="Script" id=2]
@@ -7,12 +7,13 @@
 [ext_resource path="res://weapons/raw_assets/shotgun.glb" type="PackedScene" id=5]
 [ext_resource path="res://weapons/raw_assets/rocketlauncher.glb" type="PackedScene" id=6]
 [ext_resource path="res://weapons/raw_assets/adv-time-shotgun1.1.glb" type="PackedScene" id=7]
-[ext_resource path="res://characters/CharacterMover.gd" type="Script" id=8]
-[ext_resource path="res://characters/HealthManager.gd" type="Script" id=9]
+[ext_resource path="res://characters/CharacterMover.tscn" type="PackedScene" id=8]
+[ext_resource path="res://characters/HealthManager.tscn" type="PackedScene" id=9]
 [ext_resource path="res://weapons/Weapon.gd" type="Script" id=10]
 [ext_resource path="res://weapons/HitScanBulletEmitter.tscn" type="PackedScene" id=11]
 [ext_resource path="res://effects/MuzzleFlash.gd" type="Script" id=12]
 [ext_resource path="res://blender_files/untextured_blaster_flash.glb" type="PackedScene" id=13]
+[ext_resource path="res://weapons/crosshairs/crosshair066.png" type="Texture" id=14]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -74,7 +75,15 @@ tracks/1/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 
-[node name="Player" type="KinematicBody"]
+[sub_resource type="SphereShape" id=4]
+radius = 15.0
+
+[sub_resource type="SphereShape" id=5]
+radius = 50.0
+
+[node name="Player" type="KinematicBody" groups=[
+"player",
+]]
 collision_layer = 6
 collision_mask = 3
 script = ExtResource( 1 )
@@ -157,12 +166,38 @@ anims/idle = SubResource( 3 )
 
 [node name="HitScanBulletEmitter" parent="Camera/WeaponManager/Weapons/Blaster/BulletEmitters" instance=ExtResource( 11 )]
 
+[node name="Crosshair" type="TextureRect" parent="Camera/WeaponManager/Weapons/Blaster"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -36.0
+margin_top = -36.0
+margin_right = 36.0
+margin_bottom = 36.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AlertAreaHearing" type="Area" parent="Camera/WeaponManager"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="Camera/WeaponManager/AlertAreaHearing"]
+shape = SubResource( 4 )
+
+[node name="AlertAreaLos" type="Area" parent="Camera/WeaponManager"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="Camera/WeaponManager/AlertAreaLos"]
+shape = SubResource( 5 )
+
 [node name="FirePoint" type="Spatial" parent="Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.188483 )
 
-[node name="CharacterMover" type="Spatial" parent="."]
-script = ExtResource( 8 )
+[node name="CharacterMover" parent="." instance=ExtResource( 8 )]
 
-[node name="HealthManager" type="Spatial" parent="."]
-script = ExtResource( 9 )
+[node name="HealthManager" parent="." instance=ExtResource( 9 )]
 [connection signal="fired" from="Camera/WeaponManager/Weapons/Blaster" to="Camera/WeaponManager/Weapons/Blaster/Graphics/MuzzleFlash" method="flash"]
