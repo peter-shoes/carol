@@ -1,6 +1,6 @@
 extends Spatial
 
-export var flash_time = 0.02
+export var flash_time = 0.01
 var timer : Timer
 
 func _ready():

@@ -1,6 +1,7 @@
 extends Spatial
 
-var hit_effect = preload("res://effects/BulletHitEffect.tscn")#preload loads the arg when the scene is loaded # just use load if you're only using it once. preload is for things you'll be loading multiple times.
+var hit_effect = preload("res://effects/BulletHitEffect.tscn")#preload loads the arg when the scene is loaded 
+# just use load if you're only using it once. preload is for things you'll be loading multiple times.
 export var distance = 10000
 var bodies_to_exclude = [] #list of bodies to exclude from hit
 var damage = 1 #set to 1 because it will be set by the weapon itself (parent)

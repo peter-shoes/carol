@@ -71,7 +71,7 @@ __meta__ = {
 navmesh = SubResource( 4 )
 
 [node name="Furneck" parent="Navigation" instance=ExtResource( 1 )]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.22392, 7.15098 )
+transform = Transform( 1.55791, 0, -1.25416, 0, 2, 0, 1.25416, 0, 1.55791, -1.40733, 1, 8.58676 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 6 )

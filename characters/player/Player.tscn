@@ -3,9 +3,7 @@
 [ext_resource path="res://characters/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://characters/player/WeaponManager.gd" type="Script" id=2]
 [ext_resource path="res://weapons/raw_assets/machete.glb" type="PackedScene" id=3]
-[ext_resource path="res://weapons/raw_assets/machinegun.glb" type="PackedScene" id=4]
-[ext_resource path="res://weapons/raw_assets/shotgun.glb" type="PackedScene" id=5]
-[ext_resource path="res://weapons/raw_assets/rocketlauncher.glb" type="PackedScene" id=6]
+[ext_resource path="res://weapons/raw_assets/gustav_gun.glb" type="PackedScene" id=4]
 [ext_resource path="res://weapons/raw_assets/adv-time-shotgun1.1.glb" type="PackedScene" id=7]
 [ext_resource path="res://characters/CharacterMover.tscn" type="PackedScene" id=8]
 [ext_resource path="res://characters/HealthManager.tscn" type="PackedScene" id=9]
@@ -17,6 +15,51 @@
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
+
+[sub_resource type="Animation" id=6]
+resource_name = "attack"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Graphics:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0.05, 0.03, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Graphics:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -0.5 ), Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Graphics:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=2]
 resource_name = "attack"
@@ -110,38 +153,51 @@ visible = false
 
 [node name="machete" parent="Camera/WeaponManager/Weapons/Machete/Graphics" instance=ExtResource( 3 )]
 
-[node name="MachineGun" type="Spatial" parent="Camera/WeaponManager/Weapons"]
-transform = Transform( 0.163814, 0, 0, 0, 0.163814, 0, 0, 0, 0.163814, 0.186595, 0.0820341, 0.462506 )
-visible = false
+[node name="GustavGun" type="Spatial" parent="Camera/WeaponManager/Weapons"]
+transform = Transform( 8.34742e-10, 0, -0.09, 0, 0.09, 0, 0.07, 0, 1.07324e-09, 0.1, 0.18, 0.55 )
+script = ExtResource( 10 )
+automatic = true
+damage = 1
+ammo = -1
+attack_rate = 0.1
 
-[node name="Graphics" type="Spatial" parent="Camera/WeaponManager/Weapons/MachineGun"]
+[node name="Graphics" type="Spatial" parent="Camera/WeaponManager/Weapons/GustavGun"]
+transform = Transform( 0.999962, 0.00872654, 0, -0.00872654, 0.999962, 0, 0, 0, 1, 0.05, 0.03, 0 )
 
-[node name="machinegun" parent="Camera/WeaponManager/Weapons/MachineGun/Graphics" instance=ExtResource( 4 )]
+[node name="gustav_gun" parent="Camera/WeaponManager/Weapons/GustavGun/Graphics" instance=ExtResource( 4 )]
 
-[node name="Shotgun" type="Spatial" parent="Camera/WeaponManager/Weapons"]
-transform = Transform( 0.171269, 0, 0, 0, 0.171269, 0, 0, 0, 0.171269, 0.141081, 0.144198, 0.59632 )
-visible = false
+[node name="BulletEmitters" type="Spatial" parent="Camera/WeaponManager/Weapons/GustavGun"]
+transform = Transform( -0.525229, 0, -1.66951e-08, 0, 0.408511, 0, 1.29851e-08, 0, -0.408511, -0.199858, 0.143888, 0.0296444 )
 
-[node name="Graphics" type="Spatial" parent="Camera/WeaponManager/Weapons/Shotgun"]
+[node name="HitScanBulletEmitter" parent="Camera/WeaponManager/Weapons/GustavGun/BulletEmitters" instance=ExtResource( 11 )]
 
-[node name="shotgun" parent="Camera/WeaponManager/Weapons/Shotgun/Graphics" instance=ExtResource( 5 )]
+[node name="Crosshair" type="TextureRect" parent="Camera/WeaponManager/Weapons/GustavGun"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -36.0
+margin_top = -36.0
+margin_right = 36.0
+margin_bottom = 36.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="RocketLauncher" type="Spatial" parent="Camera/WeaponManager/Weapons"]
-transform = Transform( 0.0791374, 0, 0, 0, 0.0791374, 0, 0, 0, 0.0791374, 0.104306, 0.156013, 0.511473 )
-visible = false
-
-[node name="Graphics" type="Spatial" parent="Camera/WeaponManager/Weapons/RocketLauncher"]
-
-[node name="rocketlauncher" parent="Camera/WeaponManager/Weapons/RocketLauncher/Graphics" instance=ExtResource( 6 )]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera/WeaponManager/Weapons/GustavGun"]
+autoplay = "idle"
+anims/attack = SubResource( 6 )
+anims/idle = SubResource( 7 )
 
 [node name="Blaster" type="Spatial" parent="Camera/WeaponManager/Weapons"]
 transform = Transform( -1.60709e-09, 0, 0.036766, 0, 0.036766, 0, -0.036766, 0, -1.60709e-09, 0.102332, 0.18295, 0.50601 )
+visible = false
 script = ExtResource( 10 )
-automatic = true
-attack_rate = 0.5
+ammo = -1
+attack_rate = 0.6
 
 [node name="Graphics" type="Spatial" parent="Camera/WeaponManager/Weapons/Blaster"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24292, 0, 0 )
 
 [node name="adv-time-shotgun11" parent="Camera/WeaponManager/Weapons/Blaster/Graphics" instance=ExtResource( 7 )]
 
@@ -198,6 +254,8 @@ shape = SubResource( 5 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.188483 )
 
 [node name="CharacterMover" parent="." instance=ExtResource( 8 )]
+max_speed = 15
+jump_force = 20
 
 [node name="HealthManager" parent="." instance=ExtResource( 9 )]
 [connection signal="fired" from="Camera/WeaponManager/Weapons/Blaster" to="Camera/WeaponManager/Weapons/Blaster/Graphics/MuzzleFlash" method="flash"]

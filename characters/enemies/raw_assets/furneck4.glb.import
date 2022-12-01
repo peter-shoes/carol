@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/furneck.glb-7141407383193af81763c6e79fd03a92.scn"
+path="res://.import/furneck4.glb-1352af78b02ed5e9b1112e3ae477c238.scn"
 
 [deps]
 
-source_file="res://characters/enemies/raw_assets/furneck.glb"
-dest_files=[ "res://.import/furneck.glb-7141407383193af81763c6e79fd03a92.scn" ]
+source_file="res://characters/enemies/raw_assets/furneck4.glb"
+dest_files=[ "res://.import/furneck4.glb-1352af78b02ed5e9b1112e3ae477c238.scn" ]
 
 [params]
 

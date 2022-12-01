@@ -1,11 +1,9 @@
 extends Spatial
 
-enum WEAPON_SLOTS {MACHETE, MACHINE_GUN, SHOTGUN, ROCKET_LAUNCHER, BLASTER}
+enum WEAPON_SLOTS {MACHETE, GUSTAV_GUN, BLASTER}
 var slots_unlocked = {
 	WEAPON_SLOTS.MACHETE: true,
-	WEAPON_SLOTS.MACHINE_GUN: true,
-	WEAPON_SLOTS.SHOTGUN: true,
-	WEAPON_SLOTS.ROCKET_LAUNCHER: true,
+	WEAPON_SLOTS.GUSTAV_GUN: true,
 	WEAPON_SLOTS.BLASTER: true,
 } #this is gd dict formatting
 
@@ -30,8 +28,9 @@ func init(_fire_point: Spatial, _bodies_to_exclude: Array):
 	
 	#repeat this for all weapon alerts except melee
 	weapons[WEAPON_SLOTS.BLASTER].connect("fired", self, "alert_nearby_enemies")
+	weapons[WEAPON_SLOTS.GUSTAV_GUN].connect("fired", self, "alert_nearby_enemies")
 	
-	switch_to_weapon_slot(WEAPON_SLOTS.MACHETE)#only works with al always true weapon like the machete
+	switch_to_weapon_slot(WEAPON_SLOTS.MACHETE)#only works with an always true weapon like the machete
 	
 func attack(attack_input_just_pressed: bool, attack_input_held: bool): #from weapon script
 	if cur_weapon.has_method("attack"): #just in case so it doesn't crash if the weapon has no attack method
